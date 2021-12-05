@@ -1,9 +1,8 @@
-import Head from "next/head"
+import Head from 'next/head'
+import dynamic from 'next/dynamic'
+
+const RSComponent = dynamic(() => import('../components/cubari_wrapper'), { ssr: false })
 
 export default function Home() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      Hello, this is a nextjs site
-    </div>
-  )
+  return <RSComponent />
 }
