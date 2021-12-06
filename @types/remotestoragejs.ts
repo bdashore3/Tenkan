@@ -4,7 +4,7 @@ import { MangaObject } from './mangaObject'
 interface Cubari {
   name: string
   builder: any
-  addSeries(manga: MangaObject): void
+  addSeries(manga: MangaObject): Promise<void>
 }
 
 export class CubariRemoteStorage extends RemoteStorage {
