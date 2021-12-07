@@ -38,20 +38,24 @@ export function convertPaperback(rawJson: string): Array<MangaObject> {
       continue
     }
 
+    // Search the parent backup for chapters and map marked chapters to an array
+    const chapterArray = obj.chapterMarkers
+      .filter((x) => x.chapter.mangaId === item.mangaId)
+      .map((y) => y.chapter.chapNum.toString())
+
     // Cubari object
     const cubariManga: MangaObject = {
       title: item.manga.titles[0],
       url: baseUrl + item.mangaId,
       slug: item.mangaId,
       coverUrl: item.manga.image,
-      chapters: [],
+      chapters: chapterArray ?? [],
       timestamp: Date.now(),
-      pinned: false,
+      pinned: true,
       source: item.sourceId.toLowerCase()
     }
     mangaArray.push(cubariManga)
   }
 
-  //console.log('Completed\nGo to output/output.json');
   return mangaArray
 }
