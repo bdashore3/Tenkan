@@ -33,7 +33,7 @@ export default function Home() {
         <ul className="flex items-center">
           <SocialButton
             name="github"
-            url="https://github.com/bdashore3/Tsuchi"
+            url="https://github.com/bdashore3/cubari-importer"
             color="hover:text-green-500"
             svgPath={SocialImages.Github}
           />
