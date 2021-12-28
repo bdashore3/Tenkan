@@ -79,7 +79,7 @@ export default function CubariWrapper() {
         '\n',
         'Please use inspektor or cubari to see if your manga uploaded properly.'
       ])
-      console.log('Upload complete. Any errors are listed in the console.')
+      console.log('Upload complete. Any errors are listed here.')
     }
 
     fr.readAsText(event.target.files[0])
@@ -105,12 +105,12 @@ export default function CubariWrapper() {
         />
       </div>
       <h1 className="text-2xl pt-8">Console</h1>
-      <div className="bg-darkbg scrollbar-thin scrollbar-thumb-whitesmoke scrollbar-track-darkbg my-3 h-52 w-full whitespace-pre-line overflow-y-scroll">
-        {consoleOutput.map((output) => (
-          <div>{output}</div>
+      <ul className="bg-darkbg scrollbar-thin scrollbar-thumb-whitesmoke scrollbar-thumb-rounded scrollbar-track-darkbg my-3 h-52 w-full whitespace-pre-line overflow-y-scroll">
+        {consoleOutput.map((output, index) => (
+          <li key={index}>{output}</li>
         ))}
         <div ref={consoleEndRef} />
-      </div>
+      </ul>
     </div>
   )
 }
