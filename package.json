@@ -10,7 +10,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remotestorage-widget": "^1.5.4",
-    "remotestoragejs": "^2.0.0-beta.1"
+    "remotestoragejs": "^2.0.0-beta.1",
+    "tailwind-scrollbar": "^1.3.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.37",
