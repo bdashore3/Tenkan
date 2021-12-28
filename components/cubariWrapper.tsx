@@ -1,28 +1,29 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import Widget from 'remotestorage-widget'
 import { remoteStorage } from '@/lib/remoteStorage'
 import testJson from '@/tests/testInput'
 import { convertPaperback } from '@/lib/backups/paperback'
 
 export default function CubariWrapper() {
-  const [consoleOutput, setConsoleOutput] = useState<Array<string>>(['> Ready'])
-
   useEffect(() => {
     new Widget(remoteStorage).attach('rs-widget')
   }, [])
 
-  function addFile() {
-    for (const manga of testJson) {
-      setConsoleOutput((consoleOutput) => [...consoleOutput, 'New Output!'])
-      console.log(`Website showing: ${consoleOutput}`)
-      console.log(remoteStorage.cubari?.addSeries(manga))
-    }
+  const [consoleOutput, setConsoleOutput] = useState<Array<string>>(['> Ready'])
+  const consoleEndRef = useRef<HTMLDivElement | null>(null)
+  const scrollToBottom = () => {
+    consoleEndRef.current?.scrollIntoView({
+      behavior: 'auto',
+      block: 'nearest',
+      inline: 'start'
+    })
   }
+
+  useEffect(scrollToBottom, [consoleOutput])
 
   function fileChanged(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
 
-    // Initalize the console output
     setConsoleOutput(['Starting...'])
 
     if (event.target.files == null) {
@@ -68,6 +69,7 @@ export default function CubariWrapper() {
 
           console.log(error)
         }
+        scrollToBottom()
       }
 
       setConsoleOutput((consoleOutput) => [
@@ -87,14 +89,8 @@ export default function CubariWrapper() {
     <div className="flex flex-col relative items-center justify-content-center">
       <p className="text-lg">To get started, connect your RemoteStorage account.</p>
       <div id="rs-widget"></div>
-      <p>Upload a backup from one of the manga apps below</p>
+      <p className="pb-5">Upload a backup from one of the below manga apps</p>
       <div>
-        <button
-          type="button"
-          className="border-solid border-2 border-black p-2 rounded-md cursor-pointer hover:bg-black hover:text-white duration-200 m-2"
-          onClick={addFile}>
-          File addition test
-        </button>
         <label
           htmlFor="upload"
           className="border-solid border-2 text-lg border-red-300 p-2 rounded-md cursor-pointer hover:bg-red-300 hover:text-black duration-200 m-2">
@@ -108,13 +104,12 @@ export default function CubariWrapper() {
           onChange={fileChanged}
         />
       </div>
-      <h1 className="text-2xl p-3">Console</h1>
+      <h1 className="text-2xl pt-8">Console</h1>
       <div className="bg-darkbg scrollbar-thin scrollbar-thumb-whitesmoke scrollbar-track-darkbg my-3 h-52 w-full whitespace-pre-line overflow-y-scroll">
-        <ul>
-          {consoleOutput.map((output, index) => (
-            <li key={index}>{output}</li>
-          ))}
-        </ul>
+        {consoleOutput.map((output) => (
+          <div>{output}</div>
+        ))}
+        <div ref={consoleEndRef} />
       </div>
     </div>
   )
