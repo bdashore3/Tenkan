@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import Widget from 'remotestorage-widget'
 import { remoteStorage } from '@/lib/remoteStorage'
-import testJson from '@/tests/testInput'
 import { convertPaperback } from '@/lib/backups/paperback'
 
 export default function CubariWrapper() {

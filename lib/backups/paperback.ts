@@ -1,9 +1,9 @@
-import { MangaObject } from '@/@types/mangaObject'
+import { CubariObject } from '@/@types/cubari'
 import { PBBackup } from '@/@types/paperback'
 
 // By nmn
-export function convertPaperback(rawJson: string): Array<MangaObject> {
-  const mangaArray: Array<MangaObject> = []
+export function convertPaperback(rawJson: string): Array<CubariObject> {
+  const mangaArray: Array<CubariObject> = []
   const obj: PBBackup = JSON.parse(rawJson)
 
   // Set ==  faster
@@ -44,7 +44,7 @@ export function convertPaperback(rawJson: string): Array<MangaObject> {
       .map((y) => y.chapter.chapNum.toString())
 
     // Cubari object
-    const cubariManga: MangaObject = {
+    const cubariManga: CubariObject = {
       title: item.manga.titles[0],
       url: baseUrl + item.mangaId,
       slug: item.mangaId,

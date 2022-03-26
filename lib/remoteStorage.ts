@@ -1,4 +1,4 @@
-import { MangaObject } from '@/@types/mangaObject'
+import { CubariObject } from '@/@types/cubari'
 import { CubariRemoteStorage } from '@/@types/remotestoragejs'
 
 // From https://github.com/appu1232/guyamoe/blob/develop/templates/history.html
@@ -41,7 +41,7 @@ const Cubari = {
 
     return {
       exports: {
-        addSeries: (manga: MangaObject) => {
+        addSeries: (manga: CubariObject) => {
           return p.storeObject('series', `/series/${manga.source}-${manga.slug}`, manga)
         }
       }

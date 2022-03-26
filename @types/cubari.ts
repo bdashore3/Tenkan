@@ -1,4 +1,4 @@
-export type MangaObject = {
+export type CubariObject = {
   slug: string
   coverUrl: string
   source: string
