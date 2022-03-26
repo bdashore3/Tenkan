@@ -1,9 +1,7 @@
-// Generated using QuickType https://app.quicktype.io/
-
 export type PBBackup = {
   library: Library[]
   sourceMangas: SourceMangas[]
-  chapterMarkers: any[]
+  chapterMarkers: ChapterMarker[]
   backupSchemaVersion: number
   date: number
   tabs: any[]
@@ -40,34 +38,34 @@ export interface Library {
 }
 
 export interface Manga {
-  rating: number
   id: string
-  description: string
-  follows: number
-  views: number
-  author: string
-  users: number
-  langFlag: string
+  rating?: number
   covers: any[]
+  author: string
   tags: MangaTag[]
+  desc: string
   titles: string[]
   image: string
+  additionalInfo: AdditionalInfo
   hentai: boolean
-  langName: string
   artist: string
-  status: number
-  avgRating: number
+  status: string
+  banner?: string
+}
+
+export interface AdditionalInfo {
+  langFlag: string
+  users: string
+  langName: string
+  avgRating: string
+  views: string
+  follows: string
 }
 
 export interface MangaTag {
   id: string
-  label: Label
+  label: string
   tags: TagTag[]
-}
-
-export enum Label {
-  Format = 'format',
-  Genres = 'genres'
 }
 
 export interface TagTag {
@@ -86,4 +84,26 @@ export interface SourceMangas {
 export interface SourceRepository {
   name: string
   url: string
+}
+
+export interface ChapterMarker {
+  totalPages: number
+  lastPage: number
+  chapter: Chapter
+  completed: boolean
+  time: number
+  hidden: boolean
+}
+
+export interface Chapter {
+  chapNum: number
+  mangaId: string
+  volume: number
+  id: string
+  time: number
+  sortingIndex: number
+  sourceId: string
+  group: string
+  langCode: string
+  name: string
 }
