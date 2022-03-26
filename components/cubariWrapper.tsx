@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import Widget from 'remotestorage-widget'
 import { remoteStorage } from '@/lib/remoteStorage'
-import { convertPaperback } from '@/lib/backups/paperback'
+import * as Paperback from '@/lib/backups/paperback/Paperback'
 
 export default function CubariWrapper() {
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function CubariWrapper() {
         return
       }
 
-      const convertedBackup = convertPaperback(e.target.result as string)
+      const convertedBackup = Paperback.toCubari(e.target.result as string)
 
       for (const manga of convertedBackup) {
         try {

@@ -2,7 +2,7 @@ import { CubariObject } from '@/@types/cubari'
 import { PBBackup } from '@/@types/paperback'
 
 // By nmn
-export function convertPaperback(rawJson: string): Array<CubariObject> {
+export default function toCubari(rawJson: string): Array<CubariObject> {
   const mangaArray: Array<CubariObject> = []
   const obj: PBBackup = JSON.parse(rawJson)
 
