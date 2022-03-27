@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import SocialButton from '@/components/socialButton'
 import SocialImages from '@/public/socialImages'
+import Link from 'next/link'
 
 const RSComponent = dynamic(() => import('../components/cubariWrapper'), { ssr: false })
 
@@ -28,8 +29,13 @@ export default function Home() {
           </a>
         </div>
       </div>
-      <div className="inline-flex flex-col justify-center items-center mt-10">
-        <ul className="flex items-center">
+      <div className="inline-flex flex-col justify-center items-center mt-5">
+        <Link href="/">
+          <button className="border-solid border-2 text-lg border-white p-2 rounded-md cursor-pointer hover:bg-white hover:text-black duration-200 mx-2">
+            Go Home
+          </button>
+        </Link>
+        <ul className="flex items-center pt-4">
           <SocialButton
             name="github"
             url="https://github.com/bdashore3/cubari-importer"

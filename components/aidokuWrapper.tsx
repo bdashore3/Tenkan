@@ -6,6 +6,7 @@ import * as Paperback from '@/lib/backups/paperback/Paperback'
 export default function AidokuWrapper() {
   const [conversionSuccess, setConversionSuccess] = useState<boolean>(false)
   const [aidokuJson, setAidokuJson] = useState<string>('{}')
+  const [newBackupName, setNewBackupName] = useState<string>('Aidoku.json')
   const [consoleOutput, setConsoleOutput] = useState<Array<string>>(['> Ready'])
   const consoleEndRef = useRef<HTMLDivElement | null>(null)
   const scrollToBottom = () => {
@@ -51,11 +52,16 @@ export default function AidokuWrapper() {
       }
 
       const convertedBackup = Paperback.toAidoku(e.target.result as string)
-      console.log(convertedBackup)
+      const backupDate = new Date(Date.now()).toISOString().split('T')[0]
+      convertedBackup.name += backupDate
+
       setAidokuJson(JSON.stringify(convertedBackup))
+      setNewBackupName(`Aidoku-${backupDate}.json`)
+
       setConsoleOutput((consoleOutput) => [
         ...consoleOutput,
-        'Conversion successful. Click the button to download your backup.'
+        'Conversion successful.',
+        `Your new backup name is: Aidoku-${backupDate}.json`
       ])
       getBlobLink()
       setConversionSuccess(true)
@@ -96,9 +102,7 @@ export default function AidokuWrapper() {
       </ul>
       {conversionSuccess && (
         <button className="border-solid border-2 text-lg border-white p-2 rounded-md cursor-pointer hover:bg-white hover:text-black duration-200">
-          <a
-            href={getBlobLink()}
-            download={`Aidoku-${new Date(Date.now()).toISOString().split('T')[0]}.json`}>
+          <a href={getBlobLink()} download={newBackupName}>
             Download
           </a>
         </button>
