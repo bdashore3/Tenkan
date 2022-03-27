@@ -132,11 +132,11 @@ export default function toAidoku(rawJson: string): AidokuResult {
 }
 
 function getAidokuSourceId(sourceId: string): string {
-  switch (sourceId) {
-    case 'MangaLife':
-    case 'MangaSee':
+  switch (sourceId.toLowerCase()) {
+    case 'mangalife':
+    case 'mangasee':
       return 'en.nepnep'
-    case 'MangaDex':
+    case 'mangadex':
       return 'multi.mangadex'
     default:
       return '_unknown'
