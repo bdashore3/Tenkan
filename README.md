@@ -1,34 +1,28 @@
-# Cubari Importer
+# Tenkan
 
-Convert your manga app backups to RemoteStorage objects for Cubari
+Convert your manga backups from service A to B
 
-## Production app
+## Production website
 
-Go [here](https://cubari.kingbri.dev) to access the public website
+Go [here](https://manga.kingbri.dev) to access the public website
 
 ## Why did we make this?
 
-I really like manga apps... I really do, but they can be a huge pain to work with especially if you lose your device.
+This site was originally made to convert and upload manga backups to RemoteStorage for [Cubari.moe](https://cubari.moe), but there's a bigger issue at play.
 
-Some manga apps are also frustrating to use and get pulled often. However, websites have a much rarer chance of dying, especially if they're a proxy for another website.
+Manga apps in general can be a huge pain to work with, especially if you lose your device or if the app suddenly dies. How does a user migrate
+a manga library when another app comes along?
 
-Enter [Cubari](https://cubari.moe). This is a website created by the [Guya project](https://github.com/appu1232/guyamoe/) for people to read manga with ease.
-
-## Ok... but this isn't Cubari
-
-That's right. However, I had to give some background information.
-
-Cubari has a system to store history which uses a protocol called [RemoteStorage](https://remotestorage.io/).
-
-This tool leverages RemoteStorage by converting your manga app backup into objects which can be imported into your RemoteStorage library.
+This is where Tenkan comes in. Tenkan allows users to easily convert their manga backups between apps. Now, when a user loads the library on a new app,
+they don't miss a beat.
 
 ## Usage
 
-1. Connect your RemoteStorage account with the widget
+1. Navigate to the [production website](https://manga.kingbri.dev)
 2. Click the button pertaining to your manga app
 3. Upload your backup file
-4. Open devtools and navigate to `Console`
-5. See the output
+4. Watch the console on your screen
+5. If you can download a backup, download it. If you are on cubari, use [Inspektor](https://inspektor.5apps.com) to see if your files were imported
 
 ## Running yourself
 
