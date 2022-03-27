@@ -73,7 +73,7 @@ export default function toAidoku(rawJson: string): AidokuResult {
       desc: item.manga.desc,
       cover: item.manga.image,
       viewer: Number(item.manga.additionalInfo.views ?? '0'),
-      status: getStatus(item.manga.status)
+      status: getStatus(item.manga.status ?? '')
     }
     aidokuObject.library.push(aidokuLibraryItem)
     aidokuObject.manga.push(aidokuMangaItem)
