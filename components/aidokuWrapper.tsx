@@ -51,17 +51,16 @@ export default function AidokuWrapper() {
         return
       }
 
-      const convertedBackup = Paperback.toAidoku(e.target.result as string)
-      const backupDate = new Date(Date.now()).toISOString().split('T')[0]
-      convertedBackup.name += backupDate
+      const backupResult = Paperback.toAidoku(e.target.result as string)
+      const convertedBackup = backupResult.backup
 
       setAidokuJson(JSON.stringify(convertedBackup))
-      setNewBackupName(`Aidoku-${backupDate}.json`)
+      setNewBackupName(`Aidoku-${backupResult.dateString}.json`)
 
       setConsoleOutput((consoleOutput) => [
         ...consoleOutput,
         'Conversion successful.',
-        `Your new backup name is: Aidoku-${backupDate}.json`
+        `Your new backup name is: Aidoku-${backupResult.dateString}.json`
       ])
       getBlobLink()
       setConversionSuccess(true)

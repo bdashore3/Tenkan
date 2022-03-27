@@ -7,9 +7,14 @@ import {
 } from '@/@types/aidoku'
 import { PBBackup } from '@/@types/paperback'
 
+interface AidokuResult {
+  backup: AidokuBackup
+  dateString: string
+}
+
 // From https://github.com/pandeynmn/paperback-aidoku-converter
-export default function toAidoku(rawJson: string): AidokuBackup {
-  const date_str = new Date(Date.now()).toISOString().split('T')[0]
+export default function toAidoku(rawJson: string): AidokuResult {
+  const dateString = new Date(Date.now()).toISOString().split('T')[0]
   const aidokuObject: AidokuBackup = {
     history: [],
     manga: [],
@@ -17,7 +22,7 @@ export default function toAidoku(rawJson: string): AidokuBackup {
     library: [],
     sources: [],
     date: 0,
-    name: `Paperback Backup ${date_str}`,
+    name: `Paperback Backup ${dateString}`,
     version: 'pb-aidoku-v0.0.1'
   }
 
@@ -120,7 +125,10 @@ export default function toAidoku(rawJson: string): AidokuBackup {
 
   aidokuObject.sources = Array.from(aidokuSourcesSet)
 
-  return aidokuObject
+  return {
+    backup: aidokuObject,
+    dateString: dateString
+  }
 }
 
 function getAidokuSourceId(sourceId: string): string {
