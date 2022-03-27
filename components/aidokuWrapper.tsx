@@ -36,7 +36,7 @@ export default function AidokuWrapper() {
     // We know that files isn't null at this point
     setConsoleOutput((consoleOutput) => [
       ...consoleOutput,
-      `Your backup name is: ${event.target.files![0].name}`
+      `Your old backup name is: ${event.target.files![0].name}`
     ])
 
     let fr = new FileReader()
@@ -57,10 +57,17 @@ export default function AidokuWrapper() {
         ...consoleOutput,
         'Conversion successful. Click the button to download your backup.'
       ])
+      getBlobLink()
       setConversionSuccess(true)
     }
 
     fr.readAsText(event.target.files[0])
+  }
+
+  // Fetch blob link for downloading
+  function getBlobLink(): string {
+    const blob = new Blob([aidokuJson], { type: 'application/json' })
+    return URL.createObjectURL(blob)
   }
 
   return (
@@ -90,9 +97,9 @@ export default function AidokuWrapper() {
       {conversionSuccess && (
         <button className="border-solid border-2 text-lg border-white p-2 rounded-md cursor-pointer hover:bg-white hover:text-black duration-200">
           <a
-            href={`data:text/json;charset=utf-8,${encodeURIComponent(aidokuJson)}`}
+            href={getBlobLink()}
             download={`Aidoku-${new Date(Date.now()).toISOString().split('T')[0]}.json`}>
-            {`Download`}
+            Download
           </a>
         </button>
       )}
