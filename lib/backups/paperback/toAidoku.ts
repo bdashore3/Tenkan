@@ -138,7 +138,7 @@ function getAidokuSourceId(sourceId: string): string {
       return 'en.nepnep'
     case 'mangadex':
       return 'multi.mangadex'
-    case 'mangafox2':
+    case 'mangafox':
         return 'en.mangafox'
     default:
       return '_unknown'
