@@ -138,6 +138,8 @@ function getAidokuSourceId(sourceId: string): string {
       return 'en.nepnep'
     case 'mangadex':
       return 'multi.mangadex'
+    case 'mangafox2':
+        return 'en.mangafox'
     default:
       return '_unknown'
   }
@@ -150,8 +152,8 @@ function getStatus(status: string): number {
         case 'completed':
             return 2
         case 'abandoned':
-            return 4
-        case 'haitus':
+            return 3
+        case 'hiatus':
             return 4
         case 'unknown':
             return 0
