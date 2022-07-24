@@ -1,13 +1,19 @@
-import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
-import Widget from 'remotestorage-widget'
-import { remoteStorage } from '@/lib/remoteStorage'
+import { ChangeEvent, useEffect, useState, useRef } from 'react'
+import pako from 'pako'
 import * as Paperback from '@/lib/backups/paperback/Paperback'
+import * as Tachiyomi from 'tachiyomi-aidoku-converter';
+
+interface AidokuResult {
+  backup: unknown;
+  dateString: string;
+  missingSources?: string[];
+}
 
 export default function AidokuWrapper() {
   const [conversionSuccess, setConversionSuccess] = useState<boolean>(false)
   const [aidokuJson, setAidokuJson] = useState<string>('{}')
   const [newBackupName, setNewBackupName] = useState<string>('Aidoku.json')
-  const [consoleOutput, setConsoleOutput] = useState<Array<string>>(['> Ready'])
+  const [consoleOutput, setConsoleOutput] = useState<Array<string>>(['> Ready.'])
   const consoleEndRef = useRef<HTMLDivElement | null>(null)
   const scrollToBottom = () => {
     consoleEndRef.current?.scrollIntoView({
@@ -22,12 +28,12 @@ export default function AidokuWrapper() {
   function fileChanged(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
 
-    setConsoleOutput(['Starting...'])
+    setConsoleOutput(['> Starting...'])
 
     if (event.target.files == null) {
       setConsoleOutput((consoleOutput) => [
         ...consoleOutput,
-        'ERROR: No files were provided! Try reuploading?'
+        '> ERROR: No files were provided! Try reuploading?'
       ])
       console.log()
 
@@ -37,7 +43,7 @@ export default function AidokuWrapper() {
     // We know that files isn't null at this point
     setConsoleOutput((consoleOutput) => [
       ...consoleOutput,
-      `Your old backup name is: ${event.target.files![0].name}`
+      `> Your old backup name is: ${event.target.files![0].name}`
     ])
 
     let fr = new FileReader()
@@ -46,27 +52,57 @@ export default function AidokuWrapper() {
       if (e.target == null) {
         setConsoleOutput((consoleOutput) => [
           ...consoleOutput,
-          'ERROR: Something went wrong when parsing your backup, try uploading again.'
+          '> ERROR: Something went wrong when parsing your backup, try uploading again.'
         ])
         return
       }
 
-      const backupResult = Paperback.toAidoku(e.target.result as string)
-      const convertedBackup = backupResult.backup
+      let backupResult: AidokuResult;
+      if (event.target.id === 'uploadPaperback') {
+        backupResult = Paperback.toAidoku(new TextDecoder().decode(e.target.result as ArrayBuffer))
 
-      setAidokuJson(JSON.stringify(convertedBackup))
+        setAidokuJson(JSON.stringify(backupResult.backup))
+      } else if (event.target.id === 'uploadTachiyomi') {
+        const data = pako.inflate(e.target.result as ArrayBuffer)
+        backupResult = Tachiyomi.toAidoku(data)
+        
+        setAidokuJson(JSON.stringify(backupResult.backup, (_, v) => {
+          const date = Date.parse(v);
+          // Matches only what Date.toJSON() would return
+          if (isNaN(date) || !(v.constructor === String && v.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/))) {
+            return v;
+          }
+          return Math.floor(date / 1000);
+        }))
+      } else {
+        setConsoleOutput((consoleOutput) => [
+          ...consoleOutput,
+          '> ERROR: Something went wrong when parsing your backup, try uploading again.'
+        ])
+        return
+      }
       setNewBackupName(`Aidoku-${backupResult.dateString}.json`)
 
       setConsoleOutput((consoleOutput) => [
         ...consoleOutput,
-        'Conversion successful.',
-        `Your new backup name is: Aidoku-${backupResult.dateString}.json`
+        '> Conversion successful.',
+        `  Your new backup name is: Aidoku-${backupResult.dateString}.json`
       ])
+
+      if (backupResult.missingSources) {
+        setConsoleOutput((consoleOutput) => [
+          ...consoleOutput,
+          `> NOTE: We couldn't convert manga from ${backupResult.missingSources!.length} sources.`,
+          `  This is not an error; we probably didn't write converters for them.`,
+          '  Here are their IDs:',
+          ...backupResult.missingSources!.map((source) => `    - ${source}`)
+        ])
+      }
       getBlobLink()
       setConversionSuccess(true)
     }
 
-    fr.readAsText(event.target.files[0])
+    fr.readAsArrayBuffer(event.target.files[0])
   }
 
   // Fetch blob link for downloading
@@ -80,14 +116,26 @@ export default function AidokuWrapper() {
       <p className="pb-5">To get started, upload a backup from one of the below manga apps</p>
       <div>
         <label
-          htmlFor="upload"
+          htmlFor="uploadPaperback"
           className="border-solid border-2 text-lg border-red-300 p-2 rounded-md cursor-pointer hover:bg-red-300 hover:text-black duration-200 m-2">
           <strong>Paperback</strong>
         </label>
         <input
           type="file"
-          id="upload"
+          id="uploadPaperback"
           accept="application/json"
+          className="hidden"
+          onChange={fileChanged}
+        />
+        <label
+          htmlFor="uploadTachiyomi"
+          className="border-solid border-2 text-lg border-blue-500 p-2 rounded-md cursor-pointer hover:bg-blue-500 hover:text-black duration-200 m-2">
+          <strong>Tachiyomi</strong>
+        </label>
+        <input
+          type="file"
+          id="uploadTachiyomi"
+          accept=".proto.gz"
           className="hidden"
           onChange={fileChanged}
         />
