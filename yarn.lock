@@ -2954,8 +2954,8 @@ supports-color@^8.0.0:
     has-flag "^4.0.0"
 
 "tachiyomi-aidoku-converter@github:beerpiss/tachiyomi-aidoku-converter":
-  version "0.3.1"
-  resolved "https://codeload.github.com/beerpiss/tachiyomi-aidoku-converter/tar.gz/01f210c8440e4575e045087ca540944a33545e99"
+  version "0.3.2"
+  resolved "https://codeload.github.com/beerpiss/tachiyomi-aidoku-converter/tar.gz/5dc17d3bc8433abac2c4bd86e286832b1e6089aa"
   dependencies:
     long "~5.2.0"
     protobufjs "~7.0.0"
