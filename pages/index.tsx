@@ -36,7 +36,7 @@ export default function Home() {
           />
           <SocialButton
             name="discord"
-            url="https://discord.gg/pswt7by"
+            url="https://kingbri.dev/discord"
             color="hover:text-blurple"
             svgPath={SocialImages.Discord}
           />

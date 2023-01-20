@@ -43,8 +43,6 @@ We try to make comments/commits as detailed as possible, but if you don't unders
 
 Creators/Developers: Brian Dashore, pandeynmn
 
-Join the support discord here (get the king-updates role to access the channel): [https://discord.gg/pswt7by](https://discord.gg/pswt7by)
-
-Developer Discords: kingbri#6666, nmn#7029
+Join the support discord here: [https://kingbri.dev/discord](https://kingbri.dev/discord)
 
 Kingbri's contact page: [https://kingbri.me/socials](https://kingbri.me/socials)
