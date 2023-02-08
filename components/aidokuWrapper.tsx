@@ -135,7 +135,7 @@ export default function AidokuWrapper() {
         <input
           type="file"
           id="uploadTachiyomi"
-          accept=".proto.gz"
+          accept=".gz"
           className="hidden"
           onChange={fileChanged}
         />
