@@ -22,8 +22,8 @@ export default function toAidoku(rawJson: string): AidokuResult {
     library: [],
     sources: [],
     date: 0,
-    name: `Paperback Backup ${dateString}`,
-    version: 'pb-aidoku-v0.0.1'
+    name: `Paperback Backup v2 [MIGRATE]`,
+    version: 'pb-aidoku-v2'
   }
 
   const pbObj: PBBackup = JSON.parse(rawJson)
