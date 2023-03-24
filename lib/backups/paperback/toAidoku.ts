@@ -41,21 +41,14 @@ export default function toAidoku(rawJson: string): AidokuResult {
     if (!paperbackIdSet.has(item.manga.id)) {
       continue
     }
-    const sourceId = getAidokuSourceId(item.sourceId)
-    if (sourceId === '_unknown') {
-      continue
-    }
-    if (item.mangaId.length < 10 && sourceId == 'multi.mangadex') {
-      // console.error( `OLD MangaDex ID MIGRTE: ${item.mangaId} - ${item.manga.titles[0]}`)
-      continue
-    }
+    const sourceId = item.sourceId + " [MIGRATE ME]"
     mangaIdSet.add(item.mangaId)
     aidokuSourcesSet.add(sourceId)
 
     const aidokuLibraryItem: AidokuLibrary = {
       mangaId: item.mangaId ?? '',
       lastUpdated: 0,
-      categories: [],
+      categories: paperbackIdTabDic[item.manga.id] ?? [],
       dateAdded: 0,
       sourceId: sourceId,
       lastOpened: 0
@@ -72,7 +65,7 @@ export default function toAidoku(rawJson: string): AidokuResult {
       sourceId: sourceId,
       desc: item.manga.desc,
       cover: item.manga.image,
-      viewer: Number(item.manga.additionalInfo.views ?? '0'),
+      viewer: 0,
       status: getStatus(item.manga.status ?? '')
     }
     aidokuObject.library.push(aidokuLibraryItem)
@@ -86,10 +79,7 @@ export default function toAidoku(rawJson: string): AidokuResult {
     if (!mangaIdSet.has(item.chapter.mangaId)) {
       continue
     }
-    const sourceId = getAidokuSourceId(item.chapter.sourceId)
-    if (sourceId === '_unknown') {
-      continue
-    }
+    const sourceId = item.chapter.sourceId + " [MIGRATE ME]"
     if (item.chapter.mangaId.length < 10 && sourceId == 'multi.mangadex') {
       continue
     }
@@ -128,20 +118,6 @@ export default function toAidoku(rawJson: string): AidokuResult {
   return {
     backup: aidokuObject,
     dateString: dateString
-  }
-}
-
-function getAidokuSourceId(sourceId: string): string {
-  switch (sourceId.toLowerCase()) {
-    case 'mangalife':
-    case 'mangasee':
-      return 'en.nepnep'
-    case 'mangadex':
-      return 'multi.mangadex'
-    case 'mangafox':
-        return 'en.mangafox'
-    default:
-      return '_unknown'
   }
 }
 
