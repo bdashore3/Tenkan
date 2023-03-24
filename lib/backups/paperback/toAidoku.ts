@@ -15,6 +15,13 @@ interface AidokuResult {
 // From https://github.com/pandeynmn/paperback-aidoku-converter
 export default function toAidoku(rawJson: string): AidokuResult {
   const dateString = new Date(Date.now()).toISOString().split('T')[0]
+  const pbObj: PBBackup = JSON.parse(rawJson)
+  const categories: Set<string> = new Set<string>()
+  for (const item of pbObj.library) {
+      for (const i of item.libraryTabs) {
+          categories.add(i.name)
+      }
+  }
   const aidokuObject: AidokuBackup = {
     history: [],
     manga: [],
@@ -23,11 +30,12 @@ export default function toAidoku(rawJson: string): AidokuResult {
     sources: [],
     date: 0,
     name: `Paperback Backup v2 [MIGRATE]`,
-    version: 'pb-aidoku-v2'
+    version: 'pb-aidoku-v2',
+    categories: Array.from(categories)
   }
 
-  const pbObj: PBBackup = JSON.parse(rawJson)
   const paperbackIdSet: Set<string> = new Set<string>()
+  const paperbackIdTabDic: Record<string, string[]> = {};
   const mangaIdSet: Set<string> = new Set<string>()
   const aidokuSourcesSet: Set<string> = new Set<string>()
 
@@ -35,6 +43,7 @@ export default function toAidoku(rawJson: string): AidokuResult {
 
   for (const item of pbObj.library) {
     paperbackIdSet.add(item.manga.id)
+    paperbackIdTabDic[item.manga.id] = item.libraryTabs.map((obj) => obj.name)
   }
 
   for (const item of pbObj.sourceMangas) {

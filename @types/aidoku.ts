@@ -9,6 +9,7 @@ export type AidokuBackup = {
   date: number
   name?: string
   version: string
+  categories?: string[];
 }
 
 export interface History {
