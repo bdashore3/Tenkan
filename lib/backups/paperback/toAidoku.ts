@@ -35,7 +35,7 @@ export default function toAidoku(rawJson: string): AidokuResult {
   }
 
   const paperbackIdSet: Set<string> = new Set<string>()
-  const paperbackIdTabDic: Record<string, string[]> = {};
+  const paperbackIdTabDic: Record<string, string[]> = {}
   const mangaIdSet: Set<string> = new Set<string>()
   const aidokuSourcesSet: Set<string> = new Set<string>()
 
@@ -54,10 +54,12 @@ export default function toAidoku(rawJson: string): AidokuResult {
     mangaIdSet.add(item.mangaId)
     aidokuSourcesSet.add(sourceId)
 
+    const categories = paperbackIdTabDic[item.manga.id] ?? []
+
     const aidokuLibraryItem: AidokuLibrary = {
       mangaId: item.mangaId ?? '',
       lastUpdated: 0,
-      categories: paperbackIdTabDic[item.manga.id] ?? [],
+      categories: [],
       dateAdded: 0,
       sourceId: sourceId,
       lastOpened: 0
@@ -89,25 +91,21 @@ export default function toAidoku(rawJson: string): AidokuResult {
       continue
     }
     const sourceId = item.chapter.sourceId + " [MIGRATE ME]"
-    if (item.chapter.mangaId.length < 10 && sourceId == 'multi.mangadex') {
-      continue
-    }
     aidokuSourcesSet.add(sourceId)
 
     const sourceOrder = new Int16Array(1)
     sourceOrder[0] = Math.abs(item.chapter.sortingIndex)
 
     const aidokuChapterItem: AidokuChapter = {
-      volume: item.chapter.volume ?? '',
+      volume: (item.chapter.volume > 0 ? item.chapter.volume : -1) ?? -1,
       mangaId: item.chapter.mangaId ?? '',
       lang: item.chapter.langCode ?? '',
       id: item.chapter.id ?? '',
       scanlator: item.chapter.group ?? '',
-      title:
-        item.chapter.name == '' ? 'Chapter ' + item.chapter.chapNum.toString() : item.chapter.name,
+      title: item.chapter.name ?? '',
       sourceId: sourceId,
       dateUploaded: item.chapter.time + 978307200,
-      chapter: item.chapter.chapNum ?? 0,
+      chapter: item.chapter.chapNum ?? -1,
       sourceOrder: sourceOrder[0] ?? 0
     }
     const aidokuHistoryItem: AidokuHistory = {
