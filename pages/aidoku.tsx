@@ -16,6 +16,9 @@ export default function Home() {
         <p className="text-red-500 text-left my-3">
           If your backup is not formatted properly, check devtools to see the converter's raw
           output.
+          <br />
+          <br />
+          Note: Rename the new paperback backup with a backup.pas4 extension to backup.zip, then upload the backup.json file extracted from it after unzipping.
         </p>
         <div className="">
           <AidokuWrapper />
